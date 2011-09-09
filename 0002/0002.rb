@@ -1,4 +1,4 @@
-/usr/bin/ruby
+#!/usr/bin/ruby
 
 # Finds all prime numbers up to Math.sqrt(y)
 # using eratosthenes sieve method recursively
