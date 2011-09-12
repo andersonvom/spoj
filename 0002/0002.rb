@@ -60,33 +60,39 @@ end
 # numbers between interval x and y
 def primes_between( x, y )
   x = 2 if x == 1
-  max = Math.sqrt(y).to_i
-  max_primes = eratosthenes max
-  max_primes_size = max_primes.size
+  y = 2 if y <= 2
+
   numbers = (x..y).to_a
   numbers_size = numbers.size
   bools = Array.new numbers_size, true
+  max = Math.sqrt(y).to_i
+  max_primes = eratosthenes max
+  max_primes_size = max_primes.size
 
-  # Compare each prime with all the numbers
+  # Choose where to start looking for primes, ignoring even numbers
+  min_number = 0
+  if numbers[0]%2 == 0
+    #min_number += 1
+  end
+
   max_primes.each do |p|
-    n = 0
+    n = min_number
     while (n < numbers_size) do
-      if (numbers[n]%p == 0)
-        n += p if (numbers[n] == p)
-        while (n < numbers_size) do
-          bools[n] = false
-          n += p
+        if (numbers[n]%p == 0)
+          n += p if (numbers[n] == p)
+          while (n < numbers_size) do
+            bools[n] = false
+            n += p
+          end
+          break
         end
-        break
-      end
-      n += 1
+      n += 2
     end
   end
 
-# Compare each number with all the primes
 =begin
-  num = 0
-  num = 1 if numbers[0]%2 == 0
+# Compare each number with all the primes
+  num = min_number
   while (num < numbers_size) do
     p = 0
     while (p < max_primes_size) do
@@ -106,21 +112,38 @@ def primes_between( x, y )
   end
 =end
 
-
-  # List numbers not marked as non-prime
-  p = 0
+  # List numbers not marked as non-prime, skipping even numbers
+  p = min_number
   primes_found = []
-  p += 1 if numbers[p] == 1
-  if numbers[p] == 2
-    primes_found << 2
-    p += 1
-  end
+  primes_found << 2 if numbers[0] == 2
   while (p < numbers_size) do
     primes_found << numbers[p] if bools[p]
     p += 2
   end
   primes_found
 end
+
+
+def fermat(x, precision = 2)
+  probable_prime = true
+  minus_one = x - 1
+  while precision > 0
+    r = (rand minus_one) + 1
+    probable_prime = ( ( ( r**minus_one) % x ) == 1 )
+    return false unless probable_prime
+    precision -= 1
+  end
+  probable_prime
+end
+
+def fermat_primes(x, y)
+  possible_primes = []
+  (x..y).each do |n|
+    possible_primes << n if fermat n, 1
+  end
+  possible_primes
+end
+
 
 # Find all prime numbers in test cases
 while tests = gets
@@ -129,6 +152,7 @@ while tests = gets
     line = gets
     n1,n2 = line.split(' ').map { |n| n.to_i }
     puts primes_between(n1, n2).inspect
+    #puts fermat_primes(n1, n2).inspect
   end
 
   break
