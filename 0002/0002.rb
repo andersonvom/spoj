@@ -1,5 +1,22 @@
 #!/usr/bin/ruby
 
+
+def sieve_to(n)
+  sieve = (2..n).to_a
+
+  sieve.each do |s|
+    next unless s
+    square_s = s*s
+    break if square_s > n
+    
+    square_s.step(n, s) do |non_prime|
+      sieve[non_prime] = nil
+    end
+  end
+  sieve.compact
+end
+
+
 # Finds all prime numbers up to Math.sqrt(x)
 # using eratosthenes sieve method recursively
 def eratosthenes(x)
@@ -69,9 +86,9 @@ def primes_between( x, y )
 
   # List numbers not marked as non-prime, skipping even numbers
   n = min_number
-  puts 2 if (x <= 2) and (y >= 2)
+  print "2\n" if (x <= 2) and (y >= 2)
   while (n < range_size) do
-    puts (x + n) if bools[n]
+    print "#{(x + n)}\n" if bools[n]
     n += 2
   end
 end
@@ -84,7 +101,7 @@ if __FILE__ == $0
       line = gets
       n1,n2 = line.split(' ').map { |n| n.to_i }
       primes_between(n1, n2)
-      puts
+      print "\n"
     end
 
     break
