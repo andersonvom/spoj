@@ -3,7 +3,9 @@
 # Finds all prime numbers up to 'n'
 # using eratosthenes sieve method
 def eratosthenes(n)
-  sieve = (2..n).to_a
+  # starting from '0' will avoid extra calculation to find correct index
+  sieve = (0..n).to_a
+  sieve[0] = sieve[1] = nil
 
   sieve.each do |s|
     next unless s
