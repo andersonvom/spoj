@@ -86,7 +86,7 @@ if __FILE__ == $0
     tests = tests.to_i # Unknown max value
 
     tests.times do |i|
-      num = gets # 1000000- characters
+      num = gets.strip # 1000000- characters
       print next_palindrome num
       print "\n"
     end
