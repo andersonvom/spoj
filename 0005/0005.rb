@@ -23,111 +23,70 @@ def next_palindrome_brute(n)
   end
 end
 
-
+# Generates next palindrome after n by analyzing both halves
+# of 'n' and incrementally increasing values on the first half
+# if necessary and duplicating them on the second half
 def next_palindrome(n)
-  n = n.to_s
+  n    = n.to_s
   size = n.size
-  even_size = size % 2
-  half = (size / 2)
 
   # Handle small cases (0..10) to optimize speed
   if size == 1
-    n = n.to_i
-    return (n+1).to_s if n < 9
+    return (n[0].ord + 1).chr if n < "9"
     return "11"
   end
 
-  # Handle special case of 9's to avoid complexity
-  if n =~ /^9+$/
-    n = n.gsub('9', '0')
-    n[-1] = '1'
-    return "1#{n}"
-  end
-
-  next_palindrome = nil
-  first = n[0..half-1].to_i
-  first_reverse = n[0..half-1].reverse.to_i
-  middle = n[half].chr.to_i unless even_size == 0
-  last = n[half+even_size..size-1].to_i
-
-  if ( last >= first_reverse )
-    if even_size == 0
-      first += 1
-    else
-      middle += 1
-      if middle == 10
-        middle = 0
-        first += 1
-      end
-    end
-  end
-
-  first_reverse = first.to_s.reverse
-  #first_reverse = first.to_s.reverse.to_i
-  #zero_missing = half - first_reverse.to_s.size
-  #append_zero = ""
-  #zero_missing.times { |i| append_zero += "0" }
-  #first_reverse = "#{append_zero}#{first_reverse}"
-
-  "#{first}#{middle}#{first_reverse}"
-end
-
-def np(n)
-  n = n.to_s
-  size = n.size
   even_size = size % 2
-  half = (size / 2)
+  half      = size / 2
+  first     = half - 1
+  middle    = half unless even_size == 0
+  last      = half + even_size
 
-  # Handle small cases (0..10) to optimize speed
-  if size == 1
-    n = n.to_i
-    return (n+1).to_s if n < 9
-    return "11"
+  # Detect whether the first half needs to be increased or not
+  inc = true
+  (first+1).times do |i|
+    f = n[first-i]
+    l = n[last+i]
+    next if f == l
+    inc = false if f > l
+    break
   end
 
-  # Handle special case of 9's to avoid complexity
-  if n =~ /^9+$/
-    n = n.gsub('9', '0')
-    n[-1] = '1'
-    return "1#{n}"
+  # If it needs to be increased, handle middle number if necessary
+  # If middle number ends up higher then 9, reset and keep increasing
+  if inc and middle
+    n[middle] = ( (n[middle].chr.to_i + 1) % 10).to_s
+    inc = false unless n[middle].chr == "0"
   end
 
-  next_palindrome = nil
-  first = n[0..half-1].to_i
-  first_reverse = n[0..half-1].reverse.to_i
-  middle = n[half].chr.to_i unless even_size == 0
-  last = n[half+even_size..size-1].to_i
-
-  if ( last >= first_reverse )
-    if even_size == 0
-      first += 1
-    else
-      middle += 1
-      if middle == 10
-        middle = 0
-        first += 1
-      end
+  # Duplicate first half on the other, increasing each number if necessary
+  (first+1).times do |i|
+    f_idx = first-i
+    l_idx = last+i
+    if inc
+      n[f_idx] = ( (n[f_idx].chr.to_i + 1) % 10 ).to_s
+      inc = false unless n[f_idx].chr == "0"
     end
+    n[l_idx] = n[f_idx]
   end
 
-  first_reverse = first.to_s.reverse
-  #first_reverse = first.to_s.reverse.to_i
-  #zero_missing = half - first_reverse.to_s.size
-  #append_zero = ""
-  #zero_missing.times { |i| append_zero += "0" }
-  #first_reverse = "#{append_zero}#{first_reverse}"
-
-  "#{first}#{middle}#{first_reverse}"
+  # If still needs to be increased, it's because first digit became 10
+  # In this case, add 1 to the beginning and the end of the string
+  if inc
+    n[-1] = "1"
+    n = "1#{n}"
+  end
+  n
 end
 
 
 # Run all test cases
 if __FILE__ == $0
   while tests = gets
-    tests = tests.to_i # 100- expressions
+    tests = tests.to_i # Unknown max value
 
     tests.times do |i|
-      num = gets # 400- characters
+      num = gets # 1000000- characters
       print next_palindrome num
       print "\n"
     end
@@ -136,4 +95,3 @@ if __FILE__ == $0
 
   end
 end
-
