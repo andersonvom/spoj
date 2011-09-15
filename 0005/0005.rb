@@ -24,16 +24,17 @@ def next_palindrome_brute(n)
 end
 
 # Generates next palindrome after n by analyzing both halves
-# of 'n' and incrementally increasing values on the first half
-# if necessary and duplicating them on the second half
+# of 'n' and increasing values on the first half if necessary
 def next_palindrome(n)
   n    = n.to_s
   size = n.size
 
   # Handle small cases (0..10) to optimize speed
   if size == 1
-    return (n[0].ord + 1).chr if n < "9"
-    return "11"
+    n = n.succ[-1]
+    n = "11" if n == "0"
+    print n
+    return
   end
 
   even_size = size % 2
@@ -55,30 +56,29 @@ def next_palindrome(n)
   # If it needs to be increased, handle middle number if necessary
   # If middle number ends up higher then 9, reset and keep increasing
   if inc and middle
-    n[middle] = ( (n[middle].chr.to_i + 1) % 10).to_s
-    inc = false unless n[middle].chr == "0"
+    n[middle] = n[middle].succ[-1]
+    inc = false unless n[middle] == "0"
   end
 
-  # Duplicate first half on the other, increasing each number if necessary
-  (first+1).times do |i|
-    f_idx = first-i
-    l_idx = last+i
-    if inc
-      n[f_idx] = ( (n[f_idx].chr.to_i + 1) % 10 ).to_s
-      inc = false unless n[f_idx].chr == "0"
-    end
-    n[l_idx] = n[f_idx]
-  end
-
-  # If still needs to be increased, it's because first digit became 10
-  # In this case, add 1 to the beginning and the end of the string
+  # Increase first half if necessary
+  init = 0
   if inc
-    n[-1] = "1"
-    n = "1#{n}"
+    temp = n[0..first].succ
+    n[0..first] = temp
+    # If first half increased in size, adjust indexes
+    unless temp.size == first+1
+      first += 1
+      init = 2 # save space for second half
+    else
+      inc = false
+    end
   end
-  n
-end
 
+  print n[0..first]
+  print n[middle] if middle
+  print n[init..first].reverse
+  print 1 if inc # print new digit (reversed)
+end
 
 # Run all test cases
 if __FILE__ == $0
@@ -88,7 +88,7 @@ if __FILE__ == $0
     tests.times do |i|
       num = gets # 1000000- characters
       num.rstrip!
-      print next_palindrome num
+      next_palindrome num
       print "\n"
     end
 
