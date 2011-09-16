@@ -1,6 +1,6 @@
-SPOJ Problem Set (classical)
-2. Prime Generator
-Problem code: PRIME1
+### 2. Prime Generator
+> SPOJ Problem Set (classical)
+> Problem code: PRIME1
 
 Peter wants to generate some prime numbers for his cryptosystem. Help him! Your task is to generate all prime numbers between two given numbers!
 Input
@@ -9,26 +9,28 @@ The input begins with the number t of test cases in a single line (t<=10). In ea
 Output
 
 For every test case print all prime numbers p such that m <= p <= n, one number per line, test cases separated by an empty line.
+
 Example
+-------
 
-Input:
-2
-1 10
-3 5
+### Input:
+	2
+	1 10
+	3 5
 
-Output:
-2
-3
-5
-7
+### Output:
+	2
+	3
+	5
+	7
+	
+	3
+	5
 
-3
-5
-
-Warning: large Input/Output data, be careful with certain languages (though most should be OK if the algorithm is well designed)
-Added by:	Adam Dzedzej
-Date:	2004-05-01
-Time limit:	6s
-Source limit:	50000B
-Languages:	All except: PERL 6
+> Warning:      large Input/Output data, be careful with certain languages (though most should be OK if the algorithm is well designed)  
+> Added by:	Adam Dzedzej  
+> Date:	        2004-05-01  
+> Time limit:	6s  
+> Source limit:	50000B  
+> Languages:	All except: PERL 6
 
