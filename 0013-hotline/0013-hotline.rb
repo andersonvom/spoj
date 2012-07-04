@@ -114,6 +114,7 @@ module SPOJ
           predicate.chomp!('s')
         end
         subject = subjects.join(", ")
+        predicate.chomp!('s') if subject =~ /I|you/
       end
 
       [subject, predicate + object.to_s].compact.join(' ') + "."
