@@ -56,22 +56,23 @@ module SPOJ
       subject = "all" if subject == 'nobody' or subject == 'everybody'
       full_predicate = "#{predicate}#{object}"
 
+      # search for contradictions
       if self.predicates[full_predicate]
         if subject == "all"
           values = self.predicates[full_predicate].values.uniq
           self.contradiction = true if values.size == 2 or values[0] != status
         else
-          previous_status = self.subjects["all"][full_predicate]
-          previous_status = self.subjects[subject][full_predicate] unless previous_status
+          previous_subject = self.subjects["all"] || self.subjects[subject] || {}
+          previous_status = previous_subject[full_predicate]
           self.contradiction = true if previous_status != nil and previous_status != status
         end
 
         return if contradiction? # just ignore everything else
-      else
-        # nothing has been said before, initialize
-        self.subjects[subject] ||= {}
-        self.predicates[full_predicate] ||= {}
       end
+
+      # initialize 
+      self.subjects[subject] ||= {}
+      self.predicates[full_predicate] ||= {}
 
       self.subjects[subject].store(full_predicate, status)
       self.predicates[full_predicate].store(subject, status)
