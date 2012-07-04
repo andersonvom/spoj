@@ -108,7 +108,7 @@ module SPOJ
         return "I don't know." if subjects.empty?
 
         # handle multiple subjects
-        # TODO: handle I and you
+        subjects = subjects.map { |sub| @@special_subjects[sub] || sub }
         if subjects.size > 1
           subjects[-1] = "#{subjects[-2]} and #{subjects.pop}"
           predicate.chomp!('s')
@@ -116,7 +116,7 @@ module SPOJ
         subject = subjects.join(", ")
       end
 
-      [@@special_subjects[subject] || subject, predicate + object.to_s].compact.join(' ') + "."
+      [subject, predicate + object.to_s].compact.join(' ') + "."
     end
 
     def answer_what(question)
