@@ -91,9 +91,9 @@ Example
     8: TUV
     9: WXYZ
 	
-> Added by:     Adrian Kosowski
-> Date:         2004-05-09
-> Time limit:   5s
-> Source limit: 50000B
-> Languages:    All
-> Resource:     ACM Central European Programming Contest, Prague 2000
+> Added by:     Adrian Kosowski  
+> Date:         2004-05-09  
+> Time limit:   5s  
+> Source limit: 50000B  
+> Languages:    All  
+> Resource:     ACM Central European Programming Contest, Prague 2000  
