@@ -5,6 +5,23 @@ module SPOJ
   class IKeyboard
 
     def self.solve(keys, letters, frequencies)
+      num_keys = keys.size
+      num_letters = letters.size
+      price = Array.new(num_keys) { Array.new }
+      solution = Array.new(num_keys) { Array.new }
+
+      num_keys.times do |k|
+        current_price = 0
+
+        num_letters.times do |l|
+          # initialize
+          if k == 0
+            current_price += frequencies[l] * (l+1)
+            price[k][l] = current_price
+            solution[k][l] = 0
+          end
+        end
+      end
     end
 
   end
