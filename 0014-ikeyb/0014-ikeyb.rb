@@ -9,19 +9,16 @@ module SPOJ
       num_letters = letters.size
       price = Array.new(num_keys) { Array.new }
       solution = Array.new(num_keys) { Array.new }
+      cost = Array.new(num_letters) { Array.new }
 
-      num_keys.times do |k|
-        current_price = 0
-
-        num_letters.times do |l|
-          # initialize
-          if k == 0
-            current_price += frequencies[l] * (l+1)
-            price[k][l] = current_price
-            solution[k][l] = 0
-          end
+      # initialize costs
+      num_letters.times do |i|
+        (i..num_letters-1).each do |j|
+          prev_idx = (j > 0) ? j-1 : j
+          cost[i][j] = cost[i][prev_idx].to_i + frequencies[j] * (j+1)
         end
       end
+
     end
 
   end
