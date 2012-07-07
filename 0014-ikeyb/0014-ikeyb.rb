@@ -15,7 +15,7 @@ module SPOJ
       num_letters.times do |i|
         (i..num_letters-1).each do |j|
           prev_idx = (j > 0) ? j-1 : j
-          cost[i][j] = cost[i][prev_idx].to_i + frequencies[j] * (j+1)
+          cost[i][j] = cost[i][prev_idx].to_i + frequencies[j] * (j-i+1)
           best_price[i][j] = cost[i][j] if i == 0
         end
       end
