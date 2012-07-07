@@ -29,6 +29,25 @@ module SPOJ
         end
       end
 
+      # The best price for _k_ keys and _l_ letters is the minimum value of the results on column _k-1_
+      # (best result for _k-1_ keys and _j_ letters) plus the respective costs of the remaining letters for that result
+      # e.g.: For 3 keys and 5 letters, the best price will be the minimum of:
+      #       best_price[1][2] + CDE
+      #       best_price[1][3] +  DE
+      #       best_price[1][4] +   E
+      (1..num_keys-1).each do |k|
+        (k..num_letters-1).each do |l|
+          chosen = nil
+          (k-1..l-1).each do |j|
+            possible_solution = best_price[k-1][j] + cost[j+1][l]
+            if possible_solution < best_price[k][l].to_i or best_price[k][l].nil?
+              best_price[k][l] = possible_solution if possible_solution < best_price[k][l].to_i or best_price[k][l].nil?
+              solution[k][l] = j+1
+            end
+          end
+        end
+      end
+
     end
 
   end
