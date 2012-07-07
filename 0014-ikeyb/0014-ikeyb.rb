@@ -7,7 +7,7 @@ module SPOJ
     def self.solve(keys, letters, frequencies)
       num_keys = keys.size
       num_letters = letters.size
-      price = Array.new(num_keys) { Array.new }
+      best_price = Array.new(num_keys) { Array.new }
       solution = Array.new(num_keys) { Array.new }
       cost = Array.new(num_letters) { Array.new }
 
@@ -16,6 +16,7 @@ module SPOJ
         (i..num_letters-1).each do |j|
           prev_idx = (j > 0) ? j-1 : j
           cost[i][j] = cost[i][prev_idx].to_i + frequencies[j] * (j+1)
+          best_price[i][j] = cost[i][j] if i == 0
         end
       end
 
