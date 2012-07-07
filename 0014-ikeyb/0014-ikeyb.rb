@@ -48,6 +48,19 @@ module SPOJ
         end
       end
 
+      print_solution keys, letters, solution, num_keys-1, num_letters-1
+    end
+
+    # solution[key][letter] contains the first char that should be printed for a problem with
+    # _key_ keys and _letter_ letters. So from a given _k_ and _l_ we can backtrack to the first
+    # key and print all characters for all keys.
+    def self.print_solution(keys, letters, solution, key, letter)
+      return if key < 0
+      initial_char = solution[key][letter]
+      self.print_solution keys, letters, solution, key-1, solution[key][letter]-1
+      print "#{keys[key]}: "
+      (initial_char..letter).each { |l| print letters[l] }
+      puts
     end
 
   end
