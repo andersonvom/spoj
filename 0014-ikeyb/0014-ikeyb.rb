@@ -37,7 +37,6 @@ module SPOJ
       #       best_price[1][4] +   E
       (1..num_keys-1).each do |k|
         (k..num_letters-1).each do |l|
-          chosen = nil
           (k-1..l-1).each do |j|
             possible_solution = best_price[k-1][j] + cost[j+1][l]
             if possible_solution < best_price[k][l].to_i or best_price[k][l].nil?
