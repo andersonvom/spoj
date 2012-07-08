@@ -15,7 +15,7 @@ File.open("input_large.txt", 'w') do |f|
     f.puts "#{num_keys} #{num_letters}"
     f.puts freqs.shuffle[0,num_keys].join
     f.puts freqs.shuffle[0,num_letters].join
-    num_letters.times { f.puts (rand * 1000).to_i }
+    num_letters.times { f.puts (rand * 100000).to_i }
   end
 
 end  
