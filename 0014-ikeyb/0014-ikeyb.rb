@@ -54,11 +54,9 @@ module SPOJ
     # key and print all characters for all keys.
     def self.print_solution(keys, letters, solution, key, letter)
       return if key < 0
-      self.print_solution keys, letters, solution, key-1, solution[key][letter]-1
       initial_char = solution[key][letter]
-      print "#{keys[key]}: "
-      (initial_char..letter).each { |l| print letters[l] }
-      puts
+      self.print_solution keys, letters, solution, key-1, initial_char-1
+      puts keys[key] + ": " + letters[initial_char..letter]
     end
 
   end
