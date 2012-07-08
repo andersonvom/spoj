@@ -2,11 +2,11 @@
 
 FILENAME = "input_large.txt"
 NUM_CASES = 2000
-VALID_CHARS = Array.new(126-33+1) { |i| (i+33).chr }
+ALL_CHARS = Array.new(126-33+1) { |i| (i+33).chr }
 
 # sort valid chars for better visualization
-letters = VALID_CHARS.collect{ |i| i if i =~ /[A-Za-z0-9]/ }.compact
-VALID_CHARS = letters + (VALID_CHARS - letters)
+letters = ALL_CHARS.collect{ |i| i if i =~ /[A-Za-z0-9]/ }.compact
+VALID_CHARS = letters + (ALL_CHARS - letters)
 
 info = []
 info << "#{NUM_CASES}"
