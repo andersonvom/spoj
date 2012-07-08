@@ -20,8 +20,7 @@ module SPOJ
         (k..num_letters-1).each do |l|
           # Initializing first key costs: all letters in a single key
           if k == 0
-            current_price = frequencies[l] * (l+1)
-            best_price[k][l] = best_price[k][l-1] + current_price
+            best_price[k][l] = best_price[k][l-1] + frequencies[l] * (l+1) # current_price
             next
           end
 
