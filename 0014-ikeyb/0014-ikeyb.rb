@@ -4,12 +4,16 @@ module SPOJ
 
   class IKeyboard
 
+    MAX_KEYS = 90
+    MAX_LETTERS = 90
+    INFINITE = 100000 * (MAX_LETTERS+1)*MAX_LETTERS/2   # max price of a solution (all letters in a single key)
+
     def self.solve(keys, letters, frequencies)
       num_keys = keys.size
       num_letters = letters.size
-      cost = Array.new(num_letters) { Array.new }
-      best_price = Array.new(num_keys) { Array.new }
-      solution = Array.new(num_keys) { Array.new } # Best letter with which to start key _k_ if using _l_ letters
+      cost = Array.new(num_letters) { Array.new(num_letters) { 0 } }
+      best_price = Array.new(num_keys) { Array.new(num_letters) { INFINITE } }
+      solution = Array.new(num_keys) { Array.new(num_letters) { 0 } } # Best letter with which to start key _k_ if using _l_ letters
 
       # Initialize costs:
       # This is a triangular matrix with the accumulated costs of each letter and its successors
@@ -20,11 +24,11 @@ module SPOJ
       #                             e, ...
       num_letters.times do |i|
         (i..num_letters-1).each do |j|
-          prev_idx = (j > 0) ? j-1 : j
-          cost[i][j] = cost[i][prev_idx].to_i + frequencies[j] * (j-i+1)
-          if i == 0 # trivial solution with a single key: all letters go there
+          cost[i][j] = cost[i][j-1] + frequencies[j] * (j-i+1)
+
+          if (i == 0 or i == j) and i < num_keys # trivial solution with a single key or the same number of keys and letters
             best_price[i][j] = cost[i][j]
-            solution[i][j] = 0
+            solution[i][j] = j if i == j
           end
         end
       end
@@ -36,11 +40,11 @@ module SPOJ
       #       best_price[1][3] +  DE
       #       best_price[1][4] +   E
       (1..num_keys-1).each do |k|
-        (k..num_letters-1).each do |l|
+        (k+1..num_letters-1).each do |l|
           (k-1..l-1).each do |j|
             possible_solution = best_price[k-1][j] + cost[j+1][l]
-            if possible_solution < best_price[k][l].to_i or best_price[k][l].nil?
-              best_price[k][l] = possible_solution if possible_solution < best_price[k][l].to_i or best_price[k][l].nil?
+            if possible_solution < best_price[k][l].to_i
+              best_price[k][l] = possible_solution
               solution[k][l] = j+1
             end
           end
