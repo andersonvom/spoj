@@ -15,7 +15,7 @@ NUM_CASES.times do
 
   info << "#{num_keys} #{num_letters}"
   info << VALID_CHARS[0,num_keys].join
-  info << VALID_CHARS.shuffle[0,num_letters].join
+  info << VALID_CHARS[0,num_letters].join
   num_letters.times { info << (rand * 100000).to_i }
 end
 
