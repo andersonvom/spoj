@@ -2,17 +2,20 @@
 
 FILENAME = "input_large.txt"
 NUM_CASES = 2000
-LETTERS = Array.new(126-33+1) { |i| (i+33).chr }
+VALID_CHARS = Array.new(126-33+1) { |i| (i+33).chr }
+
+# sort valid chars for better visualization
+letters = VALID_CHARS.collect{ |i| i if i =~ /[A-Za-z0-9]/ }.compact
+VALID_CHARS = letters + (VALID_CHARS - letters)
 
 info = []
 info << "#{NUM_CASES}"
 NUM_CASES.times do
   num_keys, num_letters = [ (rand * 90 + 1).to_i, (rand * 90 + 1).to_i ].sort
-  LETTERS.shuffle[0,num_letters]
 
   info << "#{num_keys} #{num_letters}"
-  info << LETTERS.shuffle[0,num_keys].join
-  info << LETTERS.shuffle[0,num_letters].join
+  info << VALID_CHARS[0,num_keys].join
+  info << VALID_CHARS.shuffle[0,num_letters].join
   num_letters.times { info << (rand * 100000).to_i }
 end
 
