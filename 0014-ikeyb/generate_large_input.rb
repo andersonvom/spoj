@@ -1,22 +1,29 @@
 #!/usr/bin/ruby
 
+FILENAME = "input_large.txt"
+num_cases = 2000
+freqs = []
+(33..126).each { |i| freqs << i.chr }
 
-File.open("input_large.txt", 'w') do |f|
+info = []
+info << "#{num_cases}"
+num_cases.times do
+  num_keys, num_letters = [ (rand * 90 + 1).to_i, (rand * 90 + 1).to_i ].sort
+  freqs.shuffle[0,num_letters]
 
-  num_cases = 2000
-  freqs = []
-  (33..126).each { |i| freqs << i.chr }
+  info << "#{num_keys} #{num_letters}"
+  info << freqs.shuffle[0,num_keys].join
+  info << freqs.shuffle[0,num_letters].join
+  num_letters.times { info << (rand * 100000).to_i }
+end
 
-  f.puts "#{num_cases}"
-  num_cases.times do
-    num_keys, num_letters = [ (rand * 90 + 1).to_i, (rand * 90 + 1).to_i ].sort
-    freqs.shuffle[0,num_letters]
-
-    f.puts "#{num_keys} #{num_letters}"
-    f.puts freqs.shuffle[0,num_keys].join
-    f.puts freqs.shuffle[0,num_letters].join
-    num_letters.times { f.puts (rand * 100000).to_i }
+begin
+  File.open(FILENAME, 'w') do |f|
+    f.puts info
   end
-
-end  
-
+  puts "Large input file created: #{FILENAME}"
+rescue
+  STDOUT.puts info
+  puts "# There was an error creating the file #{FILENAME}. Output redirected to screen."
+  puts "# Lines starting with a '#' are not part of the input."
+end
