@@ -12,10 +12,7 @@ module SPOJ
     SOLUTION   = Array.new(MAX_KEYS) { Array.new(MAX_LETTERS) { 0 } } # Best letter with which to start key _k_ if using _l_ letters
     BEST_PRICE = Array.new(MAX_KEYS) { Array.new(MAX_LETTERS) { INFINITE } } # best price for SOLUTION with _k_ keys and _l_ letters
 
-    def self.solve(keys, letters, frequencies)
-      num_keys = keys.size
-      num_letters = letters.size
-
+    def self.solve(num_keys, num_letters, frequencies)
       # Initialize best price matrix for problem
       k = l = 0
       while k < num_keys-1
@@ -64,17 +61,16 @@ module SPOJ
 
       end
 
-      print_solution keys, letters, num_keys-1, num_letters-1
     end
 
     # SOLUTION[key][letter] contains the first char that should be printed for a problem with
     # _key_ keys and _letter_ letters. So from a given _k_ and _l_ we can backtrack to the first
     # key and print all characters for all keys.
-    def self.print_solution(keys, letters, key, letter)
-      return if key < 0
-      initial_char = SOLUTION[key][letter]
-      self.print_solution keys, letters, key-1, initial_char-1
-      puts keys[key] + ": " + letters[initial_char..letter]
+    def self.print_solution(keys, letters, last_key, last_letter)
+      return if last_key < 0
+      initial_char = SOLUTION[last_key][last_letter]
+      self.print_solution keys, letters, last_key-1, initial_char-1
+      puts keys[last_key] + ": " + letters[initial_char..last_letter]
     end
 
   end
@@ -89,13 +85,13 @@ if __FILE__ == $0
   while i < tests
     i += 1
     num_keys, num_letters = gets.split(' ').map { |n| n.to_i }
-    puts num_letters
     keys = gets.chomp
     letters = gets.chomp
     frequencies = Array.new(num_letters) { gets.to_i }
 
     puts "Keypad ##{i}:"
-    SPOJ::IKeyboard.solve( keys, letters, frequencies )
+    SPOJ::IKeyboard.solve( num_keys, num_letters, frequencies )
+    SPOJ::IKeyboard.print_solution keys, letters, num_keys-1, num_letters-1
     puts
   end
 
