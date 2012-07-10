@@ -14,9 +14,9 @@ module SPOJ
 
     def self.solve(num_keys, num_letters, frequencies)
       # Initialize best price matrix for problem
-      k = l = 0
-      while k < num_keys-1
-        while l < num_letters-1
+      k = l = j = current_price = 0
+      while k < num_keys
+        while l < num_letters
           BEST_PRICE[k][l] = INFINITE
           l += 1
         end
@@ -25,11 +25,11 @@ module SPOJ
 
       BEST_PRICE[0][-1] = 0 # minimize comparisons when initializing
       k = -1
-      while k < num_keys-1 # using ranges or Fixnum#times is just too slow when dealing with this many cases
+      while k < num_keys # using ranges or Fixnum#times is just too slow when dealing with this many cases
         k += 1
         current_price = 0
         l = k-1
-        while l < num_letters-1
+        while l < num_letters
           l += 1
           # Initializing first key costs: all letters in a single key
           if k == 0
@@ -47,7 +47,7 @@ module SPOJ
           #       ...
           current_price = 0
           j = l-1
-          while j < num_letters-1
+          while j < num_letters
             j += 1
             current_price += frequencies[j] * (j-l+1)
             possible_solution = BEST_PRICE[k-1][l-1] + current_price
@@ -90,8 +90,10 @@ if __FILE__ == $0
     frequencies = Array.new(num_letters) { gets.to_i }
 
     puts "Keypad ##{i}:"
+    num_keys -= 1
+    num_letters -= 1
     SPOJ::IKeyboard.solve( num_keys, num_letters, frequencies )
-    SPOJ::IKeyboard.print_solution keys, letters, num_keys-1, num_letters-1
+    SPOJ::IKeyboard.print_solution keys, letters, num_keys, num_letters
     puts
   end
 
