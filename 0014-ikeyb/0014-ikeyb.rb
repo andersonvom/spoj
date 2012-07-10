@@ -27,9 +27,13 @@ module SPOJ
       end
 
       BEST_PRICE[0][-1] = 0 # minimize comparisons when initializing
-      num_keys.times do |k|
+      k = -1
+      while k < num_keys-1 # using ranges or Fixnum#times is just too slow when dealing with this many cases
+        k += 1
         current_price = 0
-        (k..num_letters-1).each do |l|
+        l = k-1
+        while l < num_letters-1
+          l += 1
           # Initializing first key costs: all letters in a single key
           if k == 0
             BEST_PRICE[k][l] = BEST_PRICE[k][l-1] + frequencies[l] * (l+1) # current_price
@@ -45,7 +49,9 @@ module SPOJ
           #       a, bcde
           #       ...
           current_price = 0
-          (l..num_letters-1).each do |j|
+          j = l-1
+          while j < num_letters-1
+            j += 1
             current_price += frequencies[j] * (j-l+1)
             possible_solution = BEST_PRICE[k-1][l-1] + current_price
             if possible_solution < BEST_PRICE[k][j]
@@ -79,14 +85,16 @@ end
 if __FILE__ == $0
   tests = gets.to_i # approx. 2000
 
-  tests.times do |i|
-    k, l = gets.chomp.split(' ').map { |i| i.to_i }
+  i = 0
+  while i < tests
+    i += 1
+    num_keys, num_letters = gets.split(' ').map { |n| n.to_i }
+    puts num_letters
     keys = gets.chomp
     letters = gets.chomp
-    frequencies = []
-    letters.size.times { frequencies << gets.chomp.to_i }
+    frequencies = Array.new(num_letters) { gets.to_i }
 
-    puts "Keypad ##{i+1}:"
+    puts "Keypad ##{i}:"
     SPOJ::IKeyboard.solve( keys, letters, frequencies )
     puts
   end
