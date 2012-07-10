@@ -14,7 +14,7 @@ module SPOJ
 
     def self.solve(num_keys, num_letters, frequencies)
       # Initialize best price matrix for problem
-      k = l = j = current_price = 0
+      k = l = j = current_price = possible_solution = 0
       while k < num_keys
         while l < num_letters
           BEST_PRICE[k][l] = INFINITE
