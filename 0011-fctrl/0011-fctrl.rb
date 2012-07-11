@@ -31,7 +31,21 @@ module SPOJ
       num_zeroes
     end
 
+    # Zeroes only appear when 5 multiplies [2,4,6,8] and
+    # extra zeroes appear when powers of 5 multiplies these numbers.
+    # e.g.: 2 * 3 * 4 * 5     # => 120 (first zero)
+    #       ... *6*7*8*9*10   # => 3628800 (second zero)
+    #       ... *11*...*15    # => 1307674368000 (third zero)
+    #       ... *16*...*20    # => 2432902008176640000 (fourth zero)
+    #       ... *23*...*25    # => 15511210043330985984000000 (fifth zero + one extra, since 25 == 5*5)
     def self.z(n)
+      power = 5
+      num_zeroes = 0
+      while power <= n            # the number of zeroes == number of times 5
+        num_zeroes += n/power     # and powers of 5 are in the number's factors
+        power *= 5
+      end
+      num_zeroes
     end
 
   end
